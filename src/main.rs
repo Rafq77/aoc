@@ -1,8 +1,5 @@
-pub mod day01;
-pub mod day02;
+mod aoc2022;
 
 fn main() {
-    day01::day01();
-    day02::day02();
-    
+    aoc2022::aoc2022();
 }

@@ -3,7 +3,7 @@ use std::io::prelude::*;
 
 pub fn day01() {
     //println!("{}", std::env::current_dir().unwrap().display());
-    let file = File::open("src/day01/input.txt");
+    let file = File::open("src/aoc2022/day01/input.txt");
     let mut contents = String::new();
     file.expect("file not found?").read_to_string(&mut contents).unwrap();
 
