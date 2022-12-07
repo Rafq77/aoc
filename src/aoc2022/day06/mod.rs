@@ -1,23 +1,21 @@
 use itertools::Itertools;
 
-
 fn find_sequence(str: &str, window_size: usize) -> i32 {
     let table = str.chars().collect::<Vec<char>>();
     let windows = table.windows(window_size);
 
-    let mut pos = 0;
+    let s = windows
+        .filter(|w| w.iter().duplicates().collect::<Vec<_>>().is_empty())
+        .take(1)
+        .collect::<Vec<_>>()
+        .first()
+        .unwrap()
+        .to_owned()
+        .into_iter()
+        .collect::<String>();
+    let pos = (str.find(&s).unwrap() + window_size) as i32;
 
-    for w in windows.clone() {
-        let dups =  w.iter().duplicates().collect::<Vec<_>>();
-        if dups.is_empty()
-        {
-            //println!("{:?}", w.clone());
-            let subs = w.iter().to_owned().collect::<String>();
-            pos = (str.find(&subs).unwrap() + window_size) as i32;
-            break;
-        }
-    }
-    return pos;
+    pos
 }
 
 #[cfg(test)]
@@ -28,7 +26,7 @@ mod tests {
     fn cmd_translation_test() {
         let test = [
             "mjqjpqmgbljsphdztnvjfqwrcgsmlb",    // 7
-            "bvwbjplbgvbhsrlpgdmjqwftvncz",       // 5
+            "bvwbjplbgvbhsrlpgdmjqwftvncz",      // 5
             "nppdvjthqldpwncqszvftbrmjlhg",      // 6
             "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", // 10
             "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw",  //11
