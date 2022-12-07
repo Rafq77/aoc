@@ -34,19 +34,19 @@ fn parse_terminal_log(log: &str) -> (i32, i32) {
         }
     }
 
-    for (k, v) in dir_sizes.iter_mut() {
-        for (path, size) in &file_system {
-            let result = PathBuf::from(path)
-                .parent()
-                .unwrap()
-                .to_str()
-                .unwrap()
-                .contains(k);
-            if result {
-                *v += size;
-            }
-        }
-    }
+    dir_sizes.iter_mut().for_each(|(k, v)| {
+        file_system
+            .iter()
+            .filter(|(path, _)| {
+                PathBuf::from(path)
+                    .parent()
+                    .unwrap()
+                    .to_str()
+                    .unwrap()
+                    .contains(k)
+            })
+            .for_each(|(_, size)| *v += *size)
+    });
 
     let limit = 100000;
     let total = dir_sizes.values().filter(|v| **v <= limit).sum();
