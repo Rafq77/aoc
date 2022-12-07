@@ -12,19 +12,18 @@ fn move_tab(_tab: &mut Vec<Vec<char>>, cmd: (i32, i32, i32), is9000: bool) {
     let from = (cmd.1 - 1) as usize;
     let to = (cmd.2 - 1) as usize;
     let n = cmd.0;
-    
-    match is9000{
+
+    match is9000 {
         true => {
- for _i in 0..n {
-            let letter = _tab[from].pop().unwrap();
-            _tab[to].push(letter);
-        }
+            for _i in 0..n {
+                let letter = _tab[from].pop().unwrap();
+                _tab[to].push(letter);
+            }
         }
         false => {
-
-        let split_at = _tab[from].len() - (n as usize);
-        let mut letter = _tab[from].split_off(split_at);
-        _tab[to].append(&mut letter);
+            let split_at = _tab[from].len() - (n as usize);
+            let mut letter = _tab[from].split_off(split_at);
+            _tab[to].append(&mut letter);
         }
     }
 }
@@ -68,8 +67,7 @@ mod tests {
 }
 
 pub fn day05() {
-    /*
-        init =
+    /* init =
     [N]             [R]             [C]
     [T] [J]         [S] [J]         [N]
     [B] [Z]     [H] [M] [Z]         [D]
