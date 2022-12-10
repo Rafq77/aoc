@@ -21,24 +21,19 @@ fn part1n2(cmds: Vec<(&str, i32)>) -> (i32, i32) {
     for instr in cmds {
         match instr.0 {
             "noop" => cycle += 1,
-            "addx" => {
-                cycle += 2;
-            }
+            "addx" => cycle += 2,
             &_ => todo!(),
         }
 
         if strengths.contains(&cycle) || strengths.contains(&(cycle - 1)) {
-            let mut tmpCyc = cycle;
+            let mut tmpCycle = cycle;
 
             if cycle % 2 == 1 {
-                tmpCyc = cycle - 1;
-                if set.contains_key(&tmpCyc) {
-                    continue;
-                }
+                tmpCycle = cycle - 1;
             }
 
-            let mul = tmpCyc * reg_x;
-            set.entry(tmpCyc).or_insert(mul);
+            let mul = tmpCycle * reg_x;
+            set.entry(tmpCycle).or_insert(mul);
 
             //println!("cyc: {tmpCyc:3} regX: {reg_x:2} - mul: {mul}");
         }
@@ -50,18 +45,12 @@ fn part1n2(cmds: Vec<(&str, i32)>) -> (i32, i32) {
             &_ => todo!(),
         };
         for _ in 0..double {
-            let mask = [reg_x - 1, reg_x, reg_x + 1];
-            if mask.contains(&printer) {
+            if [reg_x - 1, reg_x, reg_x + 1].contains(&printer) {
                 crt += "#";
             } else {
                 crt += ".";
             }
             printer += 1;
-
-            // hotfix
-            if ((cycle % 40) - printer) > 1 {
-                printer += 1;
-            }
 
             if printer >= 40 {
                 crt += "\n";
