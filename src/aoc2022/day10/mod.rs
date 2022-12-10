@@ -26,14 +26,14 @@ fn part1n2(cmds: Vec<(&str, i32)>) -> (i32, i32) {
         }
 
         if strengths.contains(&cycle) || strengths.contains(&(cycle - 1)) {
-            let mut tmpCycle = cycle;
+            let mut tmp_cycle = cycle;
 
             if cycle % 2 == 1 {
-                tmpCycle = cycle - 1;
+                tmp_cycle = cycle - 1;
             }
 
-            let mul = tmpCycle * reg_x;
-            set.entry(tmpCycle).or_insert(mul);
+            let mul = tmp_cycle * reg_x;
+            set.entry(tmp_cycle).or_insert(mul);
 
             //println!("cyc: {tmpCyc:3} regX: {reg_x:2} - mul: {mul}");
         }
