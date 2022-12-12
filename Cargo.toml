@@ -9,3 +9,4 @@ edition = "2021"
 array2d = "0.2.1"
 array_tool = "1.0.3" # day 03
 itertools = "0.10.5"  # day 03
+petgraph = "0.6.2" # day 12
