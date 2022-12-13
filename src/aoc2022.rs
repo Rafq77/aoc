@@ -9,7 +9,7 @@ pub mod day07;
 pub mod day09;
 pub mod day10;
 pub mod day11;
-pub mod day12;
+// pub mod day12;
 pub mod day13;
 
 pub fn aoc2022()
@@ -25,7 +25,7 @@ pub fn aoc2022()
     day09::day09();
     day10::day10();
     day11::day11();
-    day12::day12();
+    // day12::day12();
     day13::day13();
 }
     
