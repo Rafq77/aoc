@@ -103,8 +103,6 @@ fn drop_sand(_input: &str, _endless: bool) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use itertools::iproduct;
-
     use super::*;
     static INSTR_SMALL: &str = "498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9";

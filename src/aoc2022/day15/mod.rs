@@ -1,8 +1,7 @@
 use itertools::Itertools;
-use nom::ParseTo;
 
 fn scan_beacons(_input: &str, _border: i32) -> i32 {
-    let mut sb : Vec<((i32, i32),(i32, i32))> = Default::default();
+    let mut sbb : Vec<((i32, i32),(i32, i32))> = Default::default();
     for line in _input.lines() {
         let tmp = line.split_whitespace().collect_vec();
         let x1 = &tmp[2][2.. tmp[2].len()-1].parse::<i32>().unwrap().clone();
@@ -10,24 +9,21 @@ fn scan_beacons(_input: &str, _border: i32) -> i32 {
         let x2 = &tmp[8][2.. tmp[8].len()-1].parse::<i32>().unwrap().clone();
         let y2 = &tmp[9][2..].parse::<i32>().unwrap().clone();
 
-        //println!("{x1} {y1} {x2} {y2}");
-
-        sb.push(((*x1,*y1), (*x2,*y2)));
+        sbb.push(((*x1,*y1), (*x2,*y2)));
     }
 
     let mut total = 0;
-
     
     //for x in -50..50 {
     for x in -1093990..5000000 {
-        for (s, b) in sb.iter() {
+        for (s, b) in sbb.iter() {
             let xb = manhattan_distance(x, _border, b.0, b.1);
             let xs = manhattan_distance(x, _border, s.0, s.1);
-            let SB = manhattan_distance(b.0, b.1, s.0, s.1);
+            let sb = manhattan_distance(b.0, b.1, s.0, s.1);
 
-            let xbs = xb < xs && SB >= xs;
-            let xsb = xs < xb && SB >= xs;
-            let bxs = xs < SB && xb <= SB;
+            let xbs = xb < xs && sb >= xs;
+            let xsb = xs < xb && sb >= xs;
+            let bxs = xs < sb && xb <= sb;
 
             //println!("{x} {s:2?} {b:2?}  {xb:2} {xs:2} {SB:2} {xbs} {xsb} {bxs}");
 
@@ -63,8 +59,6 @@ pub fn manhattan_distance(x1: i32, y1: i32, x2: i32, y2: i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    use itertools::iproduct;
-
     use super::*;
     static INSTR_SMALL: &str = "Sensor at x=2, y=18: closest beacon is at x=-2, y=15
 Sensor at x=9, y=16: closest beacon is at x=10, y=16
