@@ -135,6 +135,6 @@ pub fn day03() {
     let mut extractor = CoordsExtractor::new(include_str!("input.txt"));
 
     let part2 = extractor.calc_product();
-    println!("part1: {}", extractor.legit_nubmers.iter().sum::<u32>()); // 521515
-    println!("part2: {}", part2); // 69527306
+    println!("Day03 part1: {}", extractor.legit_nubmers.iter().sum::<u32>()); // 521515
+    println!("Day03 part2: {}", part2); // 69527306
 }

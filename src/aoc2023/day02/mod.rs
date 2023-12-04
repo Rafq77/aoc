@@ -118,6 +118,6 @@ pub fn day02() {
     let result : u32 = games.lines().map(|line| is_possible_concise(line)).sum();
     let result2 : u32 = games.lines().map(|line| is_possible(line, true)).sum();
 
-    println!("part1: {}", result); // 2369
-    println!("part2: {}", result2); // 66363
+    println!("Day02 part1: {}", result); // 2369
+    println!("Day02 part2: {}", result2); // 66363
 }
