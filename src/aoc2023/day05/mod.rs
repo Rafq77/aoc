@@ -161,5 +161,5 @@ pub fn day05() {
     let crops = parse_crops(include_str!("input.txt"));
 
     //println!("Day05 part1: {}", crops.calc_location_simple()); // part1 462648396 // brutforced
-    //println!("Day05 part2: {}", crops.calc_location_range()); // part2 ?
+    //println!("Day05 part2: {}", crops.calc_location_range()); // part2 ? 2520479 // nightly ;)
 }
