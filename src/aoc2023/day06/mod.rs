@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 fn parse_string(input: &str) -> Vec<(i64, i64)> {
     let mut lines = input.lines();
     lines
@@ -72,20 +70,20 @@ mults.iter().product()
 #[cfg(test)]
 mod tests {
     use super::*;
-        static test: &str = "Time:      7  15   30
+        static TEST: &str = "Time:      7  15   30
 Distance:  9  40  200";
 
     #[test]
     fn parse_test() {
 
-        assert_eq!(vec![(7, 9), (15, 40), (30, 200)], parse_string(test));
-        assert_eq!(vec![(71530, 940200)], parse_string_concatenated(test));
+        assert_eq!(vec![(7, 9), (15, 40), (30, 200)], parse_string(TEST));
+        assert_eq!(vec![(71530, 940200)], parse_string_concatenated(TEST));
     }
 
     #[test]
     fn full_test() {
-        assert_eq!(288,   calc_optimized_square_solution(parse_string(test)));
-        assert_eq!(71503, calc_optimized_square_solution(parse_string_concatenated(test)));
+        assert_eq!(288,   calc_optimized_square_solution(parse_string(TEST)));
+        assert_eq!(71503, calc_optimized_square_solution(parse_string_concatenated(TEST)));
     }
 }
 
