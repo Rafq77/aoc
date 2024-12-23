@@ -1,6 +1,8 @@
+#[cfg(test)]
 use std::collections::HashMap;
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct Crops {
     seeds: Vec<u32>,
     encoded_maps: Vec<Vec<(u32, u32, u32)>>,
@@ -13,7 +15,11 @@ impl Crops {
             encoded_maps,
         }
     }
+}
 
+
+#[cfg(test)]
+impl Crops {
     pub fn calc_location_simple(&self) -> u32 {
         self.calc_location(&self.seeds)
     }
@@ -158,7 +164,7 @@ humidity-to-location map:
 }
 
 pub fn day05() {
-    let crops = parse_crops(include_str!("input.txt"));
+    let _crops = parse_crops(include_str!("input.txt"));
 
     //println!("Day05 part1: {}", crops.calc_location_simple()); // part1 462648396 // brutforced
     //println!("Day05 part2: {}", crops.calc_location_range()); // part2 ? 2520479 // nightly ;)

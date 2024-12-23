@@ -1,4 +1,3 @@
-use std::collections;
 use rayon::prelude::*;
 
 type TreeMap<'a> = std::collections::HashMap<&'a str, (&'a str, &'a str)>;
@@ -6,7 +5,7 @@ type TreeMap<'a> = std::collections::HashMap<&'a str, (&'a str, &'a str)>;
 fn parse_tree(roadsigns: &str) -> TreeMap {
     let mut tree = TreeMap::new();
 
-    let smth: Vec<_> = roadsigns
+    let _smth: Vec<_> = roadsigns
     .lines()
     .map(|line| {
         let (node_name, targets) = line.split_once(" = ").unwrap();

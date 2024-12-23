@@ -1,5 +1,7 @@
+#[cfg(test)]
 use itertools::Itertools;
 
+#[cfg(test)]
 fn scan_beacons(_input: &str, _border: i32) -> i32 {
     let mut sbb : Vec<((i32, i32),(i32, i32))> = Default::default();
     for line in _input.lines() {
@@ -51,6 +53,7 @@ fn scan_beacons(_input: &str, _border: i32) -> i32 {
 }
 
 // from minutiae
+#[cfg(test)]
 pub fn manhattan_distance(x1: i32, y1: i32, x2: i32, y2: i32) -> i32 {
     let x_diff = if x1 < x2 { x2 - x1 } else { x1 - x2 };
     let y_diff = if y1 < y2 { y2 - y1 } else { y1 - y2 };
@@ -81,6 +84,7 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3";
     }
 }
 
+#[cfg(test)]
 pub fn day15() {
     let _input = include_str!("input.txt"); 
     println!("Day15 part1: {:?}", scan_beacons(_input, 2000000)); // 4796338 // too high :) i have smth wrong

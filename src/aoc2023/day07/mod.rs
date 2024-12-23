@@ -1,3 +1,4 @@
+#[cfg(test)]
 #[derive(Eq, PartialEq, Hash, Debug)]
 enum Types {
     Other,
@@ -9,6 +10,7 @@ enum Types {
     Five,
 }
 
+#[cfg(test)]
 #[derive(Debug, PartialEq)]
 struct Value {
     pairs: u32,
@@ -17,6 +19,7 @@ struct Value {
     fives: u32,
 }
 
+#[cfg(test)]
 impl Value {
     fn new(pairs: u32, threes: u32, fours: u32, fives: u32) -> Self {
         Self {
@@ -36,6 +39,7 @@ impl Value {
     }
 }
 
+#[cfg(test)]
 fn parse_card(card: char) -> u32 {
     match card {
         '2' => 2,

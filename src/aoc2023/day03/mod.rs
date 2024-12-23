@@ -1,4 +1,4 @@
-use array_tool::vec::Intersect;
+// use array_tool::vec::Intersect;
 use itertools::Itertools;
 
 struct CoordsExtractor {
@@ -76,7 +76,7 @@ impl CoordsExtractor {
     fn follow_number(&mut self, coords: (usize, usize)) -> Option<String> {
         // I assume these coords are on a digit
         // lets go leftmost and start building up my digit from there
-        let (mut row, mut col) = coords;
+        let (row, mut col) = coords;
         while col > 0
             && self
                 .array
