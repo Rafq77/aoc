@@ -1,5 +1,13 @@
 use std::cmp::Ordering;
-use nom::*;
+use nom::{
+    IResult,
+    bytes::complete::tag,
+    character::complete::{char, digit1},
+    combinator::{map, map_opt},
+    multi::separated_list0,
+    sequence::{delimited, separated_pair},
+};
+
 #[derive(Debug, Eq)]
 enum Packet {
     Number(u8),
@@ -45,9 +53,6 @@ fn part1n2(_input: &str) -> (i32, i32) {
         .filter(|(_, (a, b))| a.cmp(b) == Ordering::Less);
 
     let i = t.map(|(i, _)| i + 1);
-
-        //.map(|(i, _)| i + 1)
-        //.sum::<usize>();
 
     (i.sum::<usize>() as i32, 0)
 }
@@ -109,7 +114,25 @@ pub fn day13() {
     println!("Day13 answers: {:?}", part1n2(_input));
 }
 
-named!(item<&[u8], Packet>, alt!(map!(list, Packet::Vector) | map!(num, Packet::Number)));
-named!(num<&[u8], u8>, map_opt!(nom::character::complete::digit1, atoi::atoi));
-named!(list<&[u8], Vec<Packet>>, delimited!(char!('['), separated_list0!(char!(','), item), char!(']')));
-named!(pair<&[u8], (Packet, Packet)>, separated_pair!(item, tag!("\n"), item));
+fn item(input: &[u8]) -> IResult<&[u8], Packet> {
+    nom::branch::alt((
+        map(list, Packet::Vector),
+        map(num, Packet::Number)
+    ))(input)
+}
+
+fn num(input: &[u8]) -> IResult<&[u8], u8> {
+    map_opt(digit1, atoi::atoi)(input)
+}
+
+fn list(input: &[u8]) -> IResult<&[u8], Vec<Packet>> {
+    delimited(
+        char('['),
+        separated_list0(char(','), item),
+        char(']')
+    )(input)
+}
+
+fn pair(input: &[u8]) -> IResult<&[u8], (Packet, Packet)> {
+    separated_pair(item, tag("\n"), item)(input)
+}
