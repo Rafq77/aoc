@@ -1,4 +1,3 @@
-#[cfg(test)]
 use std::collections::HashMap;
 
 #[derive(Debug)]
@@ -18,7 +17,6 @@ impl Crops {
 }
 
 
-#[cfg(test)]
 impl Crops {
     pub fn calc_location_simple(&self) -> u32 {
         self.calc_location(&self.seeds)
@@ -155,17 +153,17 @@ humidity-to-location map:
             vec![(60, 56, 37), (56, 93, 4)],
         ];
 
-        let mut crops = Crops::new(vec![79, 14, 55, 13], encoded_maps);
+        let crops = Crops::new(vec![79, 14, 55, 13], encoded_maps);
 
-        //dbg!(crops);
-        //println!("{}", crops.calc_location_simple());
-        //println!("{}", crops.calc_location_range());
+        // dbg!(crops);
+        println!("{}", crops.calc_location_simple());
+        println!("{}", crops.calc_location_range());
     }
 }
 
 pub fn day05() {
     let _crops = parse_crops(include_str!("input.txt"));
 
-    //println!("Day05 part1: {}", crops.calc_location_simple()); // part1 462648396 // brutforced
-    //println!("Day05 part2: {}", crops.calc_location_range()); // part2 ? 2520479 // nightly ;)
+    println!("Day05 part1: {}", _crops.calc_location_simple()); // part1 462648396 // brutforced
+    println!("Day05 part2: {}", _crops.calc_location_range()); // part2 ? 2520479 // nightly ;)
 }

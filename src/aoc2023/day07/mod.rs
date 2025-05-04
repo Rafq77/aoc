@@ -1,7 +1,7 @@
 #[cfg(test)]
 #[derive(Eq, PartialEq, Hash, Debug)]
 enum Types {
-    Other,
+    // Other,
     Pair,
     DoublePair,
     Three,
@@ -61,7 +61,7 @@ fn parse_card(card: char) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::{HashMap, HashSet};
+    use std::collections::HashMap;
 
     use super::*;
     static HANDS: &str = "32T3K 765
@@ -105,30 +105,29 @@ QQQJA 483";
         ];
 
         for hand in HANDS.lines() {
+            let mut counts = HashMap::new();
+            for card in hand.split_whitespace().take(1).collect::<String>().chars() {
+                *counts.entry(parse_card(card)).or_insert(0) += 1;
+            }
 
-        let mut counts = HashMap::new();
-        for card in hand.split_whitespace().take(1).collect::<String>().chars() {
-            *counts.entry(parse_card(card)).or_insert(0) += 1;
-        }
+            dbg!(&counts);
+            let mut combos = Value::new_zero();
+            for &count in counts.values() {
+                match count {
+                    2 => combos.pairs += 1,
+                    3 => combos.threes += 1,
+                    4 => combos.fours += 1,
+                    5 => combos.fives += 1,
+                    _ => (),
+                }
+            }
 
-        dbg!(&counts);
-        let mut combos = Value::new_zero();
-        for &count in counts.values() {
-            match count {
-                2 => combos.pairs += 1,
-                3 => combos.threes += 1,
-                4 => combos.fours += 1,
-                5 => combos.fives += 1,
-                _ => (),
+            for (t, v) in types_keys.iter().zip(values.iter()) {
+                if *v == combos {
+                    types.entry(t).or_insert_with(Vec::new).push(hand);
+                }
             }
         }
-
-        for (t, v) in types_keys.iter().zip(values.iter()) {
-            if *v == combos {
-                types.entry(t).or_insert_with(Vec::new).push(hand.clone());
-            }
-        }
-    }
 
         dbg!(&types);
     }
@@ -137,5 +136,6 @@ QQQJA 483";
 pub fn day07() {
     let _input = include_str!("input.txt");
 
-    //println!("Day07 answers: {:?}", parse_cards(_input)); //
+    // println!("Day07 answers: {:?}", parse_card(_input));
+    // println!("Day07 answers: {:?}",_input.chars().map(parse_card).collect::<Vec<u32>>());
 }

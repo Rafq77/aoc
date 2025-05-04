@@ -80,7 +80,7 @@ XXX = (XXX, XXX)";
     fn part2() {
         assert_eq!(2, step_counter(TEST_1));
         assert_eq!(6, step_counter(TEST_2));
-        //assert_eq!(6, step_counter(TEST_3));
+        assert_eq!(6, step_counter(TEST_3));
     }
 }
 
