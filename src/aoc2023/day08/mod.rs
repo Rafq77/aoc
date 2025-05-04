@@ -1,5 +1,5 @@
-use rayon::prelude::*;
 use num::integer::lcm;
+use rayon::prelude::*;
 
 type TreeMap<'a> = std::collections::HashMap<&'a str, (&'a str, &'a str)>;
 
@@ -7,14 +7,18 @@ fn parse_tree(roadsigns: &str) -> TreeMap {
     let mut tree = TreeMap::new();
 
     let _smth: Vec<_> = roadsigns
-    .lines()
-    .map(|line| {
-        let (node_name, targets) = line.split_once(" = ").unwrap();
-        let tmp = targets.trim_matches(|c| c== '(' || c == ')').split_once(", ").unwrap();
+        .lines()
+        .map(|line| {
+            let (node_name, targets) = line.split_once(" = ").unwrap();
+            let tmp = targets
+                .trim_matches(|c| c == '(' || c == ')')
+                .split_once(", ")
+                .unwrap();
 
-        tree.entry(node_name).or_insert((tmp.0, tmp.1));
-        (node_name, tmp)
-    }).collect();
+            tree.entry(node_name).or_insert((tmp.0, tmp.1));
+            (node_name, tmp)
+        })
+        .collect();
 
     return tree;
 }
@@ -26,38 +30,42 @@ fn step_counter(input: &str, part2_switch: bool) -> u64 {
     let instr_len = instructions.len();
 
     let starting_node_matcher: &str = match part2_switch {
-            false => "AAA",
-            true => "A"
-        };
+        false => "AAA",
+        true => "A",
+    };
 
     // Get all starting nodes (ending with 'A')
-    let starting_nodes: Vec<&str> = tree.keys()
-                                       .filter(|k| k.ends_with(starting_node_matcher))
-                                       .cloned()
-                                       .collect();
-    
+    let starting_nodes: Vec<&str> = tree
+        .keys()
+        .filter(|k| k.ends_with(starting_node_matcher))
+        .cloned()
+        .collect();
+
     // Calculate cycle length for each starting node
-    let cycle_lengths: Vec<u64> = starting_nodes.par_iter().map(|&start_node| {
-        let mut current = start_node;
-        let mut steps = 0u64;
-        
-        // Keep going until we reach a node ending with 'Z'
-        while !current.ends_with("Z") {
-            let direction = instructions[steps as usize % instr_len];
-            let next_nodes = tree.get(current).unwrap();
-            
-            current = match direction {
-                'L' => next_nodes.0,
-                'R' => next_nodes.1,
-                _ => panic!("Invalid direction"),
-            };
-            
-            steps += 1;
-        }
-        
-        steps
-    }).collect();
-    
+    let cycle_lengths: Vec<u64> = starting_nodes
+        .par_iter()
+        .map(|&start_node| {
+            let mut current = start_node;
+            let mut steps = 0u64;
+
+            // Keep going until we reach a node ending with 'Z'
+            while !current.ends_with("Z") {
+                let direction = instructions[steps as usize % instr_len];
+                let next_nodes = tree.get(current).unwrap();
+
+                current = match direction {
+                    'L' => next_nodes.0,
+                    'R' => next_nodes.1,
+                    _ => panic!("Invalid direction"),
+                };
+
+                steps += 1;
+            }
+
+            steps
+        })
+        .collect();
+
     // Calculate LCM of all cycle lengths
     cycle_lengths.into_iter().fold(1, |acc, len| lcm(acc, len))
 }
@@ -91,7 +99,6 @@ ZZZ = (ZZZ, ZZZ)";
 22C = (22Z, 22Z)
 22Z = (22B, 22B)
 XXX = (XXX, XXX)";
-
 
     use super::*;
 
