@@ -16,6 +16,7 @@ pub mod day15;
 
 pub fn aoc2022()
 {
+    println!("*** YEAR 2022!!!! ***");
     day01::day01();
     day02::day02();
     day03::day03();

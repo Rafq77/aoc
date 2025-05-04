@@ -104,7 +104,6 @@ zoneight234
 }
 
 pub fn day01() {
-    println!("*** YEAR 2024!!!! ***");
     let _input = include_str!("input.txt"); 
     println!("Day01 part1: {}",  calc_trebuchet(_input, false)); // 55834
     // println!("Day01 part2: {}",  calc_trebuchet(_input, true)); // 53254 is too high, cheat 53221
