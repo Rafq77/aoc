@@ -73,5 +73,5 @@ pub fn day02() {
     let day02input  = include_str!("input.txt").to_string();
     // let day02input = fs::read_to_string("input.txt").expect("Had problems opening day02.txt");
     println!("Day02 part1: {0}", part1(day02input.clone())); // 313, 294 is too high! //252 was just right!
-    println!("Day02 part2:{0}", part2(day02input)); // 324 tedious...
+    println!("Day02 part2: {0}", part2(day02input)); // 324 tedious...
 }

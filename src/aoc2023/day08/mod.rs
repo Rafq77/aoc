@@ -1,4 +1,5 @@
 use rayon::prelude::*;
+use num::integer::lcm;
 
 type TreeMap<'a> = std::collections::HashMap<&'a str, (&'a str, &'a str)>;
 
@@ -18,29 +19,47 @@ fn parse_tree(roadsigns: &str) -> TreeMap {
     return tree;
 }
 
-fn step_counter(input: &str) -> u32 {
+fn step_counter(input: &str, part2_switch: bool) -> u64 {
     let (instruction, roadsigns) = input.split_once("\n\n").unwrap();
     let tree = parse_tree(roadsigns);
+    let instructions: Vec<char> = instruction.chars().collect();
+    let instr_len = instructions.len();
 
-    let mut walking_nodes: Vec<&&str> = tree.keys().to_owned().filter(|k| k.ends_with("AAA")).collect();
-    let mut step_counter = 0;
-    let mut it = instruction.chars().cycle();
+    let starting_node_matcher: &str = match part2_switch {
+            false => "AAA",
+            true => "A"
+        };
 
-    while !walking_nodes.iter().all(|&n| n.ends_with("ZZZ")) {
-        let direction = it.next().unwrap();
-
-        walking_nodes = walking_nodes.par_iter().map(|&node| {
-            let current = tree.get(node).unwrap();
-            match direction {
-                'L' => &current.0,
-                'R' => &current.1,
-                _ => panic!("WTF")
-            }
-        }).collect();
-
-        step_counter += 1;
-    }
-    step_counter
+    // Get all starting nodes (ending with 'A')
+    let starting_nodes: Vec<&str> = tree.keys()
+                                       .filter(|k| k.ends_with(starting_node_matcher))
+                                       .cloned()
+                                       .collect();
+    
+    // Calculate cycle length for each starting node
+    let cycle_lengths: Vec<u64> = starting_nodes.par_iter().map(|&start_node| {
+        let mut current = start_node;
+        let mut steps = 0u64;
+        
+        // Keep going until we reach a node ending with 'Z'
+        while !current.ends_with("Z") {
+            let direction = instructions[steps as usize % instr_len];
+            let next_nodes = tree.get(current).unwrap();
+            
+            current = match direction {
+                'L' => next_nodes.0,
+                'R' => next_nodes.1,
+                _ => panic!("Invalid direction"),
+            };
+            
+            steps += 1;
+        }
+        
+        steps
+    }).collect();
+    
+    // Calculate LCM of all cycle lengths
+    cycle_lengths.into_iter().fold(1, |acc, len| lcm(acc, len))
 }
 
 #[cfg(test)]
@@ -78,13 +97,14 @@ XXX = (XXX, XXX)";
 
     #[test]
     fn part2() {
-        assert_eq!(2, step_counter(TEST_1));
-        assert_eq!(6, step_counter(TEST_2));
-        assert_eq!(6, step_counter(TEST_3));
+        assert_eq!(2, step_counter(TEST_1, false));
+        assert_eq!(6, step_counter(TEST_2, false));
+        assert_eq!(6, step_counter(TEST_3, true));
     }
 }
 
 pub fn day08() {
     let _input = include_str!("input.txt");
-    println!("Day08 part1: {:?}", step_counter(_input)); // 12361
+    println!("Day08 part1: {:?}", step_counter(_input, false)); // part 1 12361
+    println!("Day08 part2: {:?}", step_counter(_input, true)); // part 2 18215611419223 - was always going with the wrong approach - it was about least common multiple
 }
