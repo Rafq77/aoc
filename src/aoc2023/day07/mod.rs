@@ -1,4 +1,4 @@
-use itertools::{sorted, Itertools};
+use itertools::Itertools;
 use std::collections::HashMap;
 
 #[derive(Eq, PartialEq, Hash, Copy, Clone, Debug)]
@@ -83,13 +83,8 @@ fn parse_card(card: char) -> u32 {
     }
 }
 
-fn is_high_card(counts: &Vec<u32>) -> bool {
-    let sorted: Vec<_> = sorted(counts).collect();
-
-    return sorted
-        .iter()
-        .zip(sorted.iter().skip(1))
-        .all(|(a, b)| **b == **a + 1);
+fn is_high_card(counts: &HashMap<u32, u32>) -> bool {
+    return counts.len() == 5
 }
 
 fn part1(hands: &str) -> u32 {
@@ -114,8 +109,7 @@ fn part1(hands: &str) -> u32 {
             }
 
             // Check for high card
-            let counts_keys = counts.keys().copied().collect();
-            if is_high_card(&counts_keys) {
+            if is_high_card(&counts) {
                 combos.high_card = 1;
             }
 
@@ -183,13 +177,12 @@ QQQJA 483";
 
     #[test]
     fn given_sorted_ascending_array_when_checking_then_high_card_is_recognized() {
-            let counts_ordered_ascending = vec![2, 3, 4, 5, 6];
-            let counts_unordered_ascending = vec![4, 6, 3, 5, 2];
-            let counts_unordered_no_match = vec![4, 6, 13, 5, 9];
-
-            assert!(is_high_card(&counts_ordered_ascending));
-            assert!(is_high_card(&counts_unordered_ascending));
-            assert!(!is_high_card(&counts_unordered_no_match));
+            assert!(is_high_card(&[(2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
+                .iter().cloned().collect::<std::collections::HashMap<u32, u32>>()));
+            assert!(is_high_card(&[(4, 1), (6, 1), (3, 1), (5, 1), (2, 1)]
+                .iter().cloned().collect::<std::collections::HashMap<u32, u32>>()));
+            assert!(!is_high_card(&[(4, 1), (6, 1), (5, 1), (9, 1)]
+                .iter().cloned().collect::<std::collections::HashMap<u32, u32>>()));
     }
 
     #[test]
