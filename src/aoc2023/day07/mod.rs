@@ -87,13 +87,37 @@ fn is_high_card(counts: &HashMap<u32, u32>) -> bool {
     return counts.len() == 5
 }
 
-fn part1(hands: &str) -> u32 {
+fn solve(hands: &str, part2: bool) -> u32 {
     let mut types = HashMap::new();
 
-        for hand in hands.lines() {
+    for hand in hands.lines() {
+        // Split the hand into cards and bid consistently
+        if let Some((cards_str, bid_str)) = hand.split_whitespace().collect_tuple() {
             let mut counts = HashMap::new();
-            for card in hand.split_whitespace().take(1).collect::<String>().chars() {
+            for card in cards_str.chars() {
                 *counts.entry(parse_card(card)).or_insert(0) += 1;
+            }
+
+            if part2 {
+                // Get joker count and remove jokers from counts
+                let joker_count = counts.remove(&11).unwrap_or(0);
+                
+                // Determine the best card type to convert jokers to
+                if joker_count > 0 {
+                    if joker_count == 5 {
+                        // All jokers - make them all aces
+                        counts.insert(14, 5);
+                    } else {
+                        // Find most frequent card (or highest value if tied)
+                        let best_card = *counts.iter()
+                            .max_by(|a, b| a.1.cmp(b.1).then(a.0.cmp(b.0)))
+                            .map(|(card, _)| card)
+                            .unwrap();
+                        
+                        // Add jokers to this card type
+                        *counts.entry(best_card).or_insert(0) += joker_count;
+                    }
+                }
             }
 
             // Check for pairs, threes, fours, and fives
@@ -113,21 +137,25 @@ fn part1(hands: &str) -> u32 {
                 combos.high_card = 1;
             }
 
+            // Convert cards to values - in part2, J is worth 1 instead of 11
+            let hand_values: Vec<u32> = cards_str.chars().map(|c| {
+                if part2 && c == 'J' { 1 } else { parse_card(c) }
+            }).collect();
+            
+            let bid = bid_str.parse::<u32>().unwrap();
+            
+            // Store the hand in the appropriate type bucket
             for (t, v) in TYPES_KEYS.iter().zip(VALUES.iter()) {
                 if *v == combos {
-                    if let Some((hand_card, value)) = hand.split_whitespace().collect_tuple() {
-                        // Convert hand_card to vector of u32
-                        let hand_card: Vec<u32> = hand_card.chars().map(|ch| parse_card(ch) as u32).collect();
-                        let hand_value: u32 = value.parse().unwrap();
-
-                        types.entry(t).or_insert_with(Vec::new).push((hand_card, hand_value));
-                    }
+                    types.entry(t).or_insert_with(Vec::new).push((hand_values, bid));
+                    break;
                 }
             }
         }
+    }
 
-         // Collect all hands into a single list, sorted by overall strength
-         let mut all_ranked_hands: Vec<(Types, Vec<u32>, u32)> = Vec::new();
+        // Collect all hands into a single list, sorted by overall strength
+        let mut all_ranked_hands: Vec<(Types, Vec<u32>, u32)> = Vec::new();
 
         for hand_type_key in TYPES_KEYS.iter() {
             if let Some(slice) = types.get(hand_type_key ) {
@@ -187,13 +215,14 @@ QQQJA 483";
 
     #[test]
     fn eval_test() {
-        assert_eq!(part1(HANDS), 6440); // Example assertion for the provided HANDS static data
+        assert_eq!(solve(HANDS, false), 6440); // Example assertion for the provided HANDS static data
+        assert_eq!(solve(HANDS, true), 5905); // Example assertion for the provided HANDS static data
     }
 }
 
 pub fn day07() {
     let _input = include_str!("input.txt");
 
-    println!("Day07 part1: {:?}", part1(_input)); // 145738933 is too low // should be 249483956
-    // println!("Day07 answers: {:?}",_input.chars().map(parse_card).collect::<Vec<u32>>());
+    println!("Day07 part1: {:?}", solve(_input, false)); // 145738933 is too low // should be 249483956
+    println!("Day07 part2: {:?}", solve(_input, true)); // is 252137472
 }
