@@ -84,7 +84,7 @@ fn parse_card(card: char) -> u32 {
 }
 
 fn is_high_card(counts: &HashMap<u32, u32>) -> bool {
-    return counts.len() == 5
+    return counts.len() == 5;
 }
 
 fn solve(hands: &str, part2: bool) -> u32 {
@@ -101,7 +101,7 @@ fn solve(hands: &str, part2: bool) -> u32 {
             if part2 {
                 // Get joker count and remove jokers from counts
                 let joker_count = counts.remove(&11).unwrap_or(0);
-                
+
                 // Determine the best card type to convert jokers to
                 if joker_count > 0 {
                     if joker_count == 5 {
@@ -109,11 +109,12 @@ fn solve(hands: &str, part2: bool) -> u32 {
                         counts.insert(14, 5);
                     } else {
                         // Find most frequent card (or highest value if tied)
-                        let best_card = *counts.iter()
+                        let best_card = *counts
+                            .iter()
                             .max_by(|a, b| a.1.cmp(b.1).then(a.0.cmp(b.0)))
                             .map(|(card, _)| card)
                             .unwrap();
-                        
+
                         // Add jokers to this card type
                         *counts.entry(best_card).or_insert(0) += joker_count;
                     }
@@ -138,46 +139,48 @@ fn solve(hands: &str, part2: bool) -> u32 {
             }
 
             // Convert cards to values - in part2, J is worth 1 instead of 11
-            let hand_values: Vec<u32> = cards_str.chars().map(|c| {
-                if part2 && c == 'J' { 1 } else { parse_card(c) }
-            }).collect();
-            
+            let hand_values: Vec<u32> = cards_str
+                .chars()
+                .map(|c| if part2 && c == 'J' { 1 } else { parse_card(c) })
+                .collect();
+
             let bid = bid_str.parse::<u32>().unwrap();
-            
+
             // Store the hand in the appropriate type bucket
             for (t, v) in TYPES_KEYS.iter().zip(VALUES.iter()) {
                 if *v == combos {
-                    types.entry(t).or_insert_with(Vec::new).push((hand_values, bid));
+                    types
+                        .entry(t)
+                        .or_insert_with(Vec::new)
+                        .push((hand_values, bid));
                     break;
                 }
             }
         }
     }
 
-        // Collect all hands into a single list, sorted by overall strength
-        let mut all_ranked_hands: Vec<(Types, Vec<u32>, u32)> = Vec::new();
+    // Collect all hands into a single list, sorted by overall strength
+    let mut all_ranked_hands: Vec<(Types, Vec<u32>, u32)> = Vec::new();
 
-        for hand_type_key in TYPES_KEYS.iter() {
-            if let Some(slice) = types.get(hand_type_key ) {
-                // clone, sort in place, then drain into all_ranked_hands
-                let mut hands_of_this_type: Vec<(Vec<u32>,u32)> = slice.clone();
-                hands_of_this_type.sort_by(|a, b| 
-                    // compare the card‐vectors first; if equal you could tie‐break by bid
-                    a.0.cmp(&b.0)
-                );
-                for (cards, bid) in hands_of_this_type {
-                    all_ranked_hands.push((*hand_type_key, cards, bid));
-                }
+    for hand_type_key in TYPES_KEYS.iter() {
+        if let Some(slice) = types.get(hand_type_key) {
+            // clone, sort in place, then drain into all_ranked_hands
+            let mut hands_of_this_type: Vec<(Vec<u32>, u32)> = slice.clone();
+            // compare the card‐vectors first; if equal you could tie‐break by bid
+            hands_of_this_type.sort_by(|a, b| a.0.cmp(&b.0));
+            for (cards, bid) in hands_of_this_type {
+                all_ranked_hands.push((*hand_type_key, cards, bid));
             }
         }
+    }
 
-        // `all_ranked_hands` is now sorted by type, then by cards within each type.
-        // Calculate total winnings by summing (rank * bid).
-        let mut total_winnings = 0;
-        for (i, (_type, _cards, bid)) in all_ranked_hands.iter().enumerate() {
-             let rank = (i + 1) as u32; // Ranks are 1-based
-             total_winnings += rank * bid;
-        }
+    // `all_ranked_hands` is now sorted by type, then by cards within each type.
+    // Calculate total winnings by summing (rank * bid).
+    let mut total_winnings = 0;
+    for (i, (_type, _cards, bid)) in all_ranked_hands.iter().enumerate() {
+        let rank = (i + 1) as u32; // Ranks are 1-based
+        total_winnings += rank * bid;
+    }
     return total_winnings;
 }
 
@@ -205,12 +208,24 @@ QQQJA 483";
 
     #[test]
     fn given_sorted_ascending_array_when_checking_then_high_card_is_recognized() {
-            assert!(is_high_card(&[(2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
-                .iter().cloned().collect::<std::collections::HashMap<u32, u32>>()));
-            assert!(is_high_card(&[(4, 1), (6, 1), (3, 1), (5, 1), (2, 1)]
-                .iter().cloned().collect::<std::collections::HashMap<u32, u32>>()));
-            assert!(!is_high_card(&[(4, 1), (6, 1), (5, 1), (9, 1)]
-                .iter().cloned().collect::<std::collections::HashMap<u32, u32>>()));
+        assert!(is_high_card(
+            &[(2, 1), (3, 1), (4, 1), (5, 1), (6, 1)]
+                .iter()
+                .cloned()
+                .collect::<std::collections::HashMap<u32, u32>>()
+        ));
+        assert!(is_high_card(
+            &[(4, 1), (6, 1), (3, 1), (5, 1), (2, 1)]
+                .iter()
+                .cloned()
+                .collect::<std::collections::HashMap<u32, u32>>()
+        ));
+        assert!(!is_high_card(
+            &[(4, 1), (6, 1), (5, 1), (9, 1)]
+                .iter()
+                .cloned()
+                .collect::<std::collections::HashMap<u32, u32>>()
+        ));
     }
 
     #[test]
