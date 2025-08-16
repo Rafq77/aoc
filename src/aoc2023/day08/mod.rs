@@ -3,7 +3,7 @@ use rayon::prelude::*;
 
 type TreeMap<'a> = std::collections::HashMap<&'a str, (&'a str, &'a str)>;
 
-fn parse_tree(roadsigns: &str) -> TreeMap {
+fn parse_tree<'a>(roadsigns: &'a str) -> TreeMap<'a> {
     let mut tree = TreeMap::new();
 
     let _smth: Vec<_> = roadsigns
