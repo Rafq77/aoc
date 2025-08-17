@@ -45,11 +45,11 @@ static TYPES_KEYS: [Types; 7] = [
 impl Value {
     pub const fn new(high_card: u32, pairs: u32, threes: u32, fours: u32, fives: u32) -> Self {
         Self {
-            high_card: high_card,
-            pairs: pairs,
-            threes: threes,
-            fours: fours,
-            fives: fives,
+            high_card,
+            pairs,
+            threes,
+            fours,
+            fives,
         }
     }
 
@@ -79,12 +79,12 @@ fn parse_card(card: char) -> u32 {
         'Q' => 12,
         'K' => 13,
         'A' => 14,
-        _ => card.to_digit(10).unwrap() as u32,
+        _ => card.to_digit(10).unwrap(),
     }
 }
 
 fn is_high_card(counts: &HashMap<u32, u32>) -> bool {
-    return counts.len() == 5;
+    counts.len() == 5
 }
 
 fn solve(hands: &str, part2: bool) -> u32 {
@@ -181,7 +181,7 @@ fn solve(hands: &str, part2: bool) -> u32 {
         let rank = (i + 1) as u32; // Ranks are 1-based
         total_winnings += rank * bid;
     }
-    return total_winnings;
+    total_winnings
 }
 
 #[cfg(test)]

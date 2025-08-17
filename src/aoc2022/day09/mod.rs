@@ -32,7 +32,7 @@ fn part1n2(cmds: Vec<(&str, i32)>) -> (i32, i32) {
 
         for _ in 0..len {
             h = (h.0 + d.0, h.1 + d.1);
-            knots[0] = h.clone();
+            knots[0] = h;
 
             if i32::abs_diff(h.0, t.0) > 1 || i32::abs_diff(h.1, t.1) > 1 {
                 t = (h.0 - d.0, h.1 - d.1);
@@ -53,7 +53,7 @@ fn part1n2(cmds: Vec<(&str, i32)>) -> (i32, i32) {
             }
 
             //println!("knots rnd: {:?}", knots);
-            k9.insert(knots.last().unwrap().clone()); // part2
+            k9.insert(*knots.last().unwrap()); // part2
         }
     }
 

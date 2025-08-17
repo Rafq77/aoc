@@ -54,14 +54,13 @@ fn parse_terminal_log(log: &str) -> (i32, i32) {
     let total_space = 70000000;
     let min_space = 30000000;
     let used_space = total_space - dir_sizes["/"];
-    let target_dir_size = dir_sizes
+    let target_dir_size = *dir_sizes
         .values()
         .filter(|v| (used_space + *v) >= min_space)
         .min()
-        .unwrap()
-        .clone();
+        .unwrap();
 
-    return (total, target_dir_size);
+    (total, target_dir_size)
 }
 
 #[cfg(test)]

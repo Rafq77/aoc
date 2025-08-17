@@ -11,11 +11,11 @@ fn find_sequence(str: &str, window_size: usize) -> i32 {
         .first()
         .unwrap()
         .to_owned()
-        .into_iter()
+        .iter()
         .collect::<String>();
-    let pos = (str.find(&s).unwrap() + window_size) as i32;
+    
 
-    pos
+    (str.find(&s).unwrap() + window_size) as i32
 }
 
 #[cfg(test)]

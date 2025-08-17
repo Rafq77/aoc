@@ -1,11 +1,11 @@
 use itertools::Itertools;
 
 fn make_move_cmd(str: &str) -> (i32, i32, i32) {
-    return str
+    str
         .split_ascii_whitespace()
         .filter_map(|x| x.parse::<i32>().ok())
         .collect_tuple()
-        .unwrap();
+        .unwrap()
 }
 
 fn move_tab(_tab: &mut Vec<Vec<char>>, cmd: (i32, i32, i32), is9000: bool) {
@@ -102,14 +102,14 @@ pub fn day05() {
 
     let result_part1: String = table
         .into_iter()
-        .map(|col| col.last().unwrap().clone())
+        .map(|col| *col.last().unwrap())
         .collect::<Vec<_>>()
         .iter()
         .collect();
 
     let result_part2: String = table_part2
         .into_iter()
-        .map(|col| col.last().unwrap().clone())
+        .map(|col| *col.last().unwrap())
         .collect::<Vec<_>>()
         .iter()
         .collect();

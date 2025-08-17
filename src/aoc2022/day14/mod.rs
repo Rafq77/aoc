@@ -29,7 +29,7 @@ fn drop_sand(_input: &str, _endless: bool) -> i32 {
             }
         }
 
-        if _endless == false
+        if !_endless
         {
             let y_max = map.iter().position_max_by_key(|y| y.contains(&1)).unwrap();
             for x in 0..999 {
@@ -43,7 +43,7 @@ fn drop_sand(_input: &str, _endless: bool) -> i32 {
         let mut watchdog = 0;
         let _watchdog_lmt = 300;
         while added {
-            let mut pt = source.clone();
+            let mut pt = source;
 
             // part2 check
             if map[source.1][source.0] == 2

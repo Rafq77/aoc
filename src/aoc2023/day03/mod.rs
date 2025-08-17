@@ -11,13 +11,12 @@ impl CoordsExtractor {
     fn new(string: &str) -> Self {
         let rows = string
             .lines()
-            .into_iter()
             .map(|l| l.chars().collect_vec())
             .collect::<Vec<_>>()
             .to_vec();
         let array = array2d::Array2D::from_rows(&rows).unwrap();
         CoordsExtractor {
-            array: array,
+            array,
             visited_coords: Vec::<(usize, usize)>::new(),
             legit_nubmers: Vec::<u32>::new(),
         }
@@ -31,9 +30,8 @@ impl CoordsExtractor {
             .enumerate()
             .flat_map(|row| {
                 row.1
-                    .into_iter()
                     .enumerate()
-                    .filter(|(_, &ch)| !ch.is_digit(10) && ch != '.')
+                    .filter(|(_, &ch)| !ch.is_ascii_digit() && ch != '.')
                     .map(move |(j, _)| (row.0, j))
             })
             .collect();
@@ -55,7 +53,7 @@ impl CoordsExtractor {
 
                 // Check if the character is a digit
                 if let Some(val) = self.array.get(new_x, new_y) {
-                    if val.is_digit(10) {
+                    if val.is_ascii_digit() {
                         if let Some(num) = self.follow_number((new_x, new_y)) {
                             let number = num.parse::<u32>().unwrap();
                             self.legit_nubmers.push(number.to_owned());
@@ -81,7 +79,7 @@ impl CoordsExtractor {
             && self
                 .array
                 .get(row, col - 1)
-                .map_or(false, |&c| c.is_digit(10))
+                .is_some_and(|&c| c.is_ascii_digit())
         {
             col -= 1;
         }
@@ -93,7 +91,7 @@ impl CoordsExtractor {
                 return None;
             }
 
-            if c.is_digit(10) {
+            if c.is_ascii_digit() {
                 self.visited_coords.push((row, col).to_owned());
                 number.push(c);
                 col += 1;

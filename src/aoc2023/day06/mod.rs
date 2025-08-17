@@ -15,8 +15,7 @@ fn parse_string(input: &str) -> Vec<(i64, i64)> {
                 .split_whitespace()
                 .skip(1)
                 .map(|s| s.parse().unwrap())
-                .collect::<Vec<i64>>()
-                .into_iter(),
+                .collect::<Vec<i64>>(),
         )
         .collect()
 }
@@ -46,7 +45,7 @@ fn calc_optimized_square_solution(inputs :Vec<(i64,i64)>) -> i64 {
         let b = round.0 as f64;
         // let a // optimized away since its -1
 
-        let d = (b * b + 4. * c) as f64;
+        let d = b * b + 4. * c;
         let x_0 = (-b + d.sqrt())/(-2.);
         let x_1 = (-b - d.sqrt())/(-2.);
 

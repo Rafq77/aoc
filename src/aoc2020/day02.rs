@@ -40,16 +40,14 @@ pub fn day02() -> Result<(), Error> {
         let a = target.chars().nth((_min - 1) as usize).unwrap();
         let b = target.chars().nth((_max - 1) as usize).unwrap();
 
-        let key_char = key.chars().nth(0).unwrap();
+        let key_char = key.chars().next().unwrap();
 
         if a != b
-        {
-            if a == key_char || b == key_char
+            && (a == key_char || b == key_char)
             {
                 count2 += 1;
 
             }
-        }
 
         //println!("Line min {:?} max {} key {} target {}, count {} value {}", _min, _max, key, target, count, value);
     }

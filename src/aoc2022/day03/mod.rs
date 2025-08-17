@@ -2,7 +2,7 @@ use array_tool::vec::Intersect;
 use itertools::Itertools;
 
 pub fn eval_rucksacks(str: &str) -> i32 {
-    return str.lines().map(|x| eval_doubles(x)).sum();
+    str.lines().map(eval_doubles).sum()
 }
 
 pub fn eval_doubles(str: &str) -> i32 {
@@ -14,7 +14,7 @@ pub fn eval_doubles(str: &str) -> i32 {
 
     //dbg!(str, l, r, unique[0]);
     let letter = i32::from(unique[0]);
-    let pts = if letter > 96 { letter - 96 } else { letter - 65 + 27 };
+    
 
     /*
     let y = match x {
@@ -22,7 +22,7 @@ pub fn eval_doubles(str: &str) -> i32 {
         _ => 15,
     */
 
-    return pts;
+    if letter > 96 { letter - 96 } else { letter - 65 + 27 }
 }
 
 pub fn eval_3chunk(str: &str) -> i32 {
@@ -43,7 +43,7 @@ pub fn eval_3chunk(str: &str) -> i32 {
         let pts = if letter > 96 { letter - 96 } else { letter - 65 + 27 };
         total += pts;
     }
-    return total;
+    total
 }
 
 #[cfg(test)]

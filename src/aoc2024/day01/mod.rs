@@ -32,7 +32,7 @@ fn replace_digit_words(input: &str) -> String {
                         /* sneaky tricky, some word wrap together, but this shouldn't exclude them. 
                         Therfore leave the last letter in "workping place" to append next chars 
                         and complete potential digit word*/
-                        tmp_word.push(word.chars().rev().next().unwrap()); 
+                        tmp_word.push(word.chars().next_back().unwrap()); 
                         break;
                     }
                 }
@@ -55,7 +55,7 @@ fn calc_trebuchet(_input: &str, words2digits: bool) -> u32 {
             line_tmp = replace_digit_words(&line_tmp);
         }
 
-        let number_string = line_tmp.chars().filter(|c| c.is_digit(10)).collect::<String>();
+        let number_string = line_tmp.chars().filter(|c| c.is_ascii_digit()).collect::<String>();
         let number = number_string
             .chars()
             .take(1)

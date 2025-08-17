@@ -20,7 +20,7 @@ fn parse_tree<'a>(roadsigns: &'a str) -> TreeMap<'a> {
         })
         .collect();
 
-    return tree;
+    tree
 }
 
 fn step_counter(input: &str, part2_switch: bool) -> u64 {
@@ -67,7 +67,7 @@ fn step_counter(input: &str, part2_switch: bool) -> u64 {
         .collect();
 
     // Calculate LCM of all cycle lengths
-    cycle_lengths.into_iter().fold(1, |acc, len| lcm(acc, len))
+    cycle_lengths.into_iter().fold(1, lcm)
 }
 
 #[cfg(test)]

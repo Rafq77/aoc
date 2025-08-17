@@ -3,16 +3,15 @@ use std::ops::RangeInclusive;
 pub fn is_overlaping(str: &str, any: bool) -> bool {
     let mut _nums: Vec<RangeInclusive<i32>> = str
         .split(',')
-        .map(|x| {
+        .filter_map(|x| {
             x.split_once('-')
                 .map(|(n, m)| n.parse::<i32>().unwrap()..=m.parse::<i32>().unwrap())
         })
-        .flatten()
         .collect();
 
     let r2 = _nums.pop().unwrap();
     let r1 = _nums.pop().unwrap();
-    let r3 = r2.start().clone()..=r2.end().clone(); // cloning because Ranges can't
+    let r3 = *r2.start()..=*r2.end(); // cloning because Ranges can't
     // have to use r3 because r2 is "borrowed when converting to iter"
     
     let mut _result = false;
@@ -27,27 +26,27 @@ pub fn is_overlaping(str: &str, any: bool) -> bool {
         _result2 = r1.into_iter().all(|n| r3.contains(&n));
     }
 
-    return _result || _result2;
+    _result || _result2
 }
 
 pub fn find_full_overlaps(_str: &str) -> i32 {
-    return _str
+    _str
         .split('\n')
         .map(|s| is_overlaping(s, false))
         .filter(|b| *b)
         .count()
         .try_into()
-        .unwrap();
+        .unwrap()
 }
 
 pub fn find_partial_overlaps(_str: &str) -> i32 {
-    return _str
+    _str
         .split('\n')
         .map(|s| is_overlaping(s, true))
         .filter(|b| *b)
         .count()
         .try_into()
-        .unwrap();
+        .unwrap()
 }
 
 #[cfg(test)]

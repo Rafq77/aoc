@@ -49,7 +49,7 @@ fn is_possible(game: &str, is_part2: bool) -> u32 {
 
             update_color_max_value(&mut max_color, (number, color));
 
-            if number > rules(&color) {
+            if number > rules(color) {
                 enough_balls = false;
             }
         }
@@ -72,8 +72,8 @@ fn is_possible_concise(game: &str) -> u32 {
     id.split_whitespace().last().unwrap().parse::<u32>().unwrap()
         * !games.split(';')
             .flat_map(|round| round.split(','))
-            .map(|ball| ball.trim().split_whitespace().collect_tuple().unwrap())
-            .any(|(number, color)| number.parse::<u32>().unwrap() > rules(&color)) as u32
+            .map(|ball| ball.split_whitespace().collect_tuple().unwrap())
+            .any(|(number, color)| number.parse::<u32>().unwrap() > rules(color)) as u32
 }
 
 #[cfg(test)]
@@ -115,7 +115,7 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
 pub fn day02() {
     let games = include_str!("input.txt");
     
-    let result : u32 = games.lines().map(|line| is_possible_concise(line)).sum();
+    let result : u32 = games.lines().map(is_possible_concise).sum();
     let result2 : u32 = games.lines().map(|line| is_possible(line, true)).sum();
 
     println!("Day02 part1: {}", result); // 2369
