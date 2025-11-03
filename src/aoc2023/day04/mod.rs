@@ -3,8 +3,7 @@ use std::collections::HashSet;
 fn find_intersections(input: &str) -> (u32, i32) {
     let mut sum: u32 = 0;
     let mut copies = vec![1; input.lines().count()];
-    let mut game_number: u32 = 0;
-    for line in input.lines() {
+    for (game_number, line) in (0_u32..).zip(input.lines()) {
         let (_, tmp) = line.split_once(": ").unwrap();
         let (left, right) = tmp.split_once(" | ").unwrap();
 
@@ -23,7 +22,7 @@ fn find_intersections(input: &str) -> (u32, i32) {
                 copies[i as usize] += card_count_with_bonus;
             }
         }
-        game_number += 1;
+        // game_number += 1;
     }
 
     (sum, copies.iter().sum())

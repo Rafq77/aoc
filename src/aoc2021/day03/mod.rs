@@ -30,9 +30,6 @@ pub fn part1(input: String) -> i32 {
 
 pub fn part2(input: String) -> Result<i32, ParseIntError> {
     let lines = input.lines().collect_vec();
-    let line_length = lines[0].len();
-
-    // run twice?
 
     let oxygen = get_desired_bit(&lines, BitCriteria::Oxygen);
     let co2 = get_desired_bit(&lines, BitCriteria::CO2);
@@ -46,9 +43,9 @@ enum BitCriteria {
     CO2,
 }
 
-fn get_desired_bit<'a>(lines: &'a Vec<&str>, criteria: BitCriteria) -> &'a str {
+fn get_desired_bit<'a>(lines: &'a [&str], criteria: BitCriteria) -> &'a str {
     let line_length = lines[0].len();
-    let mut lines_clone = lines.clone();
+    let mut lines_clone = lines.to_owned();
 
     for i in 0..line_length {
         let ones_count = lines_clone

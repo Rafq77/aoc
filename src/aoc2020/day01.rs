@@ -3,13 +3,15 @@ use std::io::{BufRead, BufReader, Error};
 
 //let data: Vec<u32> = data_str.lines_any().filter_map(|s| s.trim().parse()).collect();
 
-pub fn day01() -> Result<(), Error> {
+pub fn day01() -> Result<(u32, u32), Error> {
     let path = "src/aoc2020/Day01.txt";
 
     let input = File::open(path)?;
     let buffered = BufReader::new(input);
 
     let mut data: Vec<u32> = vec![];
+    let mut part1result = 0;
+    let mut part2result = 0;
 
     for line in buffered.lines() {
         let my_int: u32 = line?.trim().parse().unwrap();
@@ -26,15 +28,14 @@ pub fn day01() -> Result<(), Error> {
             let tot = a + b;
 
             if tot == 2020 {
-                println!("{} product of a,b", a * b);
+                part1result = a * b;
             }
 
-            for k in 3..len {
-                let c = data[k];
+            for c in data.iter().take(len).skip(3) {
                 let tot3 = a + b + c;
 
                 if tot3 == 2020 {
-                    println!("{} product of a,b,c", a * b * c);
+                    part2result = a * b * c;
                     flag = true;
                     break;
                 }
@@ -45,5 +46,19 @@ pub fn day01() -> Result<(), Error> {
         };
     }
 
-    Ok(())
+    Ok((part1result, part2result))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_day01() {
+        let result = day01();
+        assert!(result.is_ok());
+        let (part1, part2) = result.unwrap();
+        println!("Day01 part1: {}", part1); // 988771
+        println!("Day01 part2: {}", part2); // 171933104
+    }
 }

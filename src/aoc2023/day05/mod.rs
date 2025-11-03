@@ -33,7 +33,7 @@ impl Crops {
         self.calc_location(&input_numbers)
     }
 
-    fn calc_location(&self, seeds: &Vec<u32>) -> u32 {
+    fn calc_location(&self, seeds: &[u32]) -> u32 {
         let maps: Vec<HashMap<u32, u32>> = self
             .encoded_maps
             .iter()
