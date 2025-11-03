@@ -24,7 +24,7 @@ pub fn part1(input: String) -> i32 {
 }
 
 pub fn part2(input: String) -> Result<i32, ParseIntError> {
-    let mut lines = input.lines().collect_vec();
+    let lines = input.lines().collect_vec();
     let line_length = lines[0].len();
 
     // run twice?
@@ -32,7 +32,7 @@ pub fn part2(input: String) -> Result<i32, ParseIntError> {
     let oxygen = get_desired_bit(&lines, BitCriteria::Oxygen);
     let co2 = get_desired_bit(&lines, BitCriteria::CO2);
    
-    Ok(i32::from_str_radix(&co2, 2)? * i32::from_str_radix(&oxygen, 2)?)
+    Ok(i32::from_str_radix(co2, 2)? * i32::from_str_radix(oxygen, 2)?)
 }
 
 #[derive(PartialEq)]
@@ -52,8 +52,8 @@ fn get_desired_bit<'a>(lines: &'a Vec<&str>, criteria: BitCriteria) -> &'a str {
             .count();
 
         let desired_bit = match criteria {
-            BitCriteria::Oxygen => if ones_count >= (lines_clone.len() + 1) / 2 { '1' } else { '0' },
-            BitCriteria::CO2 => if ones_count >= (lines_clone.len() + 1) / 2 { '0' } else { '1' },
+            BitCriteria::Oxygen => if ones_count >= lines_clone.len().div_ceil(2) { '1' } else { '0' },
+            BitCriteria::CO2 => if ones_count >= lines_clone.len().div_ceil(2) { '0' } else { '1' },
         };
 
         lines_clone = lines_clone.into_iter()
