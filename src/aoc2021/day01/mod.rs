@@ -1,15 +1,20 @@
 /// Count incrementing pairs in a number list
-use std::io::{Error};
+use std::io::Error;
 
 use itertools::Itertools;
 
 // Part 1: Just count the pairs
 pub fn part1(input: String) -> i32 {
-    input.lines().collect_vec().windows(2).filter(|pair| {
-        let first: i32 = pair[0].parse().unwrap();
-        let second: i32 = pair[1].parse().unwrap();
-        second > first
-    }).count() as i32
+    input
+        .lines()
+        .collect_vec()
+        .windows(2)
+        .filter(|pair| {
+            let first: i32 = pair[0].parse().unwrap();
+            let second: i32 = pair[1].parse().unwrap();
+            second > first
+        })
+        .count() as i32
 }
 
 // Part 2: Count pairs of sums of three consecutive numbers
@@ -18,8 +23,9 @@ pub fn part2(input: String) -> i32 {
         .lines()
         .map(|line| line.parse::<i32>().unwrap())
         .tuple_windows::<(_, _, _)>()
-        .collect_vec().windows(2).filter(|pair_of_three| {
-
+        .collect_vec()
+        .windows(2)
+        .filter(|pair_of_three| {
             // Within your filter closure:
             let (a, b, c) = pair_of_three[0];
             let first_sum = a + b + c;
@@ -28,7 +34,8 @@ pub fn part2(input: String) -> i32 {
             let second_sum = d + e + f;
 
             second_sum > first_sum
-        }).count() as i32
+        })
+        .count() as i32
 }
 
 #[cfg(test)]
@@ -55,11 +62,10 @@ mod tests {
     fn test_part2() {
         assert_eq!(part2(TEST_CASE.to_string()), 5);
     }
-
 }
 
 pub fn day01() -> Result<(), Error> {
-    let day01input  = include_str!("input.txt").to_string();
+    let day01input = include_str!("input.txt").to_string();
     println!("Day01 part1: {0}", part1(day01input.clone())); // 1665
     println!("Day01 part2: {0}", part2(day01input.clone())); // 1702
     Ok(())

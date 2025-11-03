@@ -17,7 +17,6 @@ impl Crops {
     }
 }
 
-
 impl Crops {
     pub fn calc_location_simple(&self) -> u32 {
         self.calc_location(&self.seeds)

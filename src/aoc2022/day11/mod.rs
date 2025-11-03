@@ -80,10 +80,10 @@ mod tests {
         monkey_3.items = [74].to_vec();
 
         let mut serious_monkeys = [
-            &mut monkey_0.clone(), 
-            &mut monkey_1.clone(), 
-            &mut monkey_2.clone(), 
-            &mut monkey_3.clone(), 
+            &mut monkey_0.clone(),
+            &mut monkey_1.clone(),
+            &mut monkey_2.clone(),
+            &mut monkey_3.clone(),
         ];
 
         let monkey_tf_connections = [(2, 3), (2, 0), (1, 3), (0, 1)];
@@ -97,17 +97,34 @@ mod tests {
         monkeys.reverse();
         assert_eq!(105, monkeys[0].inspection_count);
         assert_eq!(101, monkeys[1].inspection_count);
-        assert_eq!(10605, monkeys.iter().take(2).map(|m| m.inspection_count).product::<u64>());
+        assert_eq!(
+            10605,
+            monkeys
+                .iter()
+                .take(2)
+                .map(|m| m.inspection_count)
+                .product::<u64>()
+        );
 
         for _ in 0..10000 {
-            monkey_business(&mut serious_monkeys, &monkey_tf_connections, (true, 19 * 13 * 17 * 23));
+            monkey_business(
+                &mut serious_monkeys,
+                &monkey_tf_connections,
+                (true, 19 * 13 * 17 * 23),
+            );
         }
 
         serious_monkeys.sort_by_key(|m| m.inspection_count);
         serious_monkeys.reverse();
         assert_eq!(52166, serious_monkeys[0].inspection_count);
         assert_eq!(52013, serious_monkeys[1].inspection_count);
-        assert_eq!( 2713310158, serious_monkeys .iter() .take(2) .map(|m| m.inspection_count) .product::<u64>()
+        assert_eq!(
+            2713310158,
+            serious_monkeys
+                .iter()
+                .take(2)
+                .map(|m| m.inspection_count)
+                .product::<u64>()
         );
     }
 }
@@ -149,7 +166,7 @@ pub fn day11() {
         &mut monkey_5.clone(),
         &mut monkey_6.clone(),
         &mut monkey_7.clone(),
-     ];
+    ];
     let mut monkeys = [
         &mut monkey_0,
         &mut monkey_1,
@@ -177,10 +194,21 @@ pub fn day11() {
     println!("Day11 part1: {:?}", monkey_power_level); // part1 57838
 
     for _ in 0..10000 {
-        monkey_business(&mut serious_monkeys, &monkey_tf_connections, (true, 5 * 17 * 2 * 7 * 3 * 11 * 13 * 19));
+        monkey_business(
+            &mut serious_monkeys,
+            &monkey_tf_connections,
+            (true, 5 * 17 * 2 * 7 * 3 * 11 * 13 * 19),
+        );
     }
     serious_monkeys.sort_by_key(|m| m.inspection_count);
     serious_monkeys.reverse();
 
-    println!("Day11 part2: {:?}", serious_monkeys.iter().take(2).map(|m| m.inspection_count) .product::<u64>()); // part2 15050382231 
+    println!(
+        "Day11 part2: {:?}",
+        serious_monkeys
+            .iter()
+            .take(2)
+            .map(|m| m.inspection_count)
+            .product::<u64>()
+    ); // part2 15050382231
 }

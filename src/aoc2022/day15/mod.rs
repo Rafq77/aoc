@@ -1,19 +1,19 @@
 use itertools::Itertools;
 
 fn scan_beacons(_input: &str, _border: i32) -> i32 {
-    let mut sbb : Vec<((i32, i32),(i32, i32))> = Default::default();
+    let mut sbb: Vec<((i32, i32), (i32, i32))> = Default::default();
     for line in _input.lines() {
         let tmp = line.split_whitespace().collect_vec();
-        let x1 = &tmp[2][2.. tmp[2].len()-1].parse::<i32>().unwrap().clone();
-        let y1 = &tmp[3][2.. tmp[3].len()-1].parse::<i32>().unwrap().clone();
-        let x2 = &tmp[8][2.. tmp[8].len()-1].parse::<i32>().unwrap().clone();
+        let x1 = &tmp[2][2..tmp[2].len() - 1].parse::<i32>().unwrap().clone();
+        let y1 = &tmp[3][2..tmp[3].len() - 1].parse::<i32>().unwrap().clone();
+        let x2 = &tmp[8][2..tmp[8].len() - 1].parse::<i32>().unwrap().clone();
         let y2 = &tmp[9][2..].parse::<i32>().unwrap().clone();
 
-        sbb.push(((*x1,*y1), (*x2,*y2)));
+        sbb.push(((*x1, *y1), (*x2, *y2)));
     }
 
     let mut total = 0;
-    
+
     //for x in -50..50 {
     for x in -1093990..5000000 {
         for (s, b) in sbb.iter() {
@@ -30,8 +30,8 @@ fn scan_beacons(_input: &str, _border: i32) -> i32 {
             if xbs || xsb || bxs {
                 total += 1;
                 break;
-            } 
-            
+            }
+
             /*
             if xs >= xb && SB > xs {
                 total += 1;
@@ -41,11 +41,8 @@ fn scan_beacons(_input: &str, _border: i32) -> i32 {
                 total += 1;
                 break;
             } */
-        } 
-
+        }
     }
-
-
 
     total
 }
@@ -82,6 +79,6 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3";
 }
 
 pub fn day15() {
-    let _input = include_str!("input.txt"); 
+    let _input = include_str!("input.txt");
     println!("Day15 part1: {:?}", scan_beacons(_input, 2000000)); // 4796338 // too high :) i have smth wrong
 }

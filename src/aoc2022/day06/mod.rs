@@ -13,7 +13,6 @@ fn find_sequence(str: &str, window_size: usize) -> i32 {
         .to_owned()
         .iter()
         .collect::<String>();
-    
 
     (str.find(&s).unwrap() + window_size) as i32
 }

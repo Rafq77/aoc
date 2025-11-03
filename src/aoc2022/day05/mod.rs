@@ -1,8 +1,7 @@
 use itertools::Itertools;
 
 fn make_move_cmd(str: &str) -> (i32, i32, i32) {
-    str
-        .split_ascii_whitespace()
+    str.split_ascii_whitespace()
         .filter_map(|x| x.parse::<i32>().ok())
         .collect_tuple()
         .unwrap()

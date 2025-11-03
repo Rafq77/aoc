@@ -14,8 +14,7 @@ pub mod day02;
 // pub mod day14;
 // pub mod day15;
 
-pub fn aoc2024()
-{
+pub fn aoc2024() {
     println!("*** YEAR 2024!!!! ***");
     day01::day01();
     day02::day02();
@@ -33,4 +32,3 @@ pub fn aoc2024()
     // day14::day14();
     //day15::day15();
 }
-    

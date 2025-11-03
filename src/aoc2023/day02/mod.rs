@@ -1,12 +1,11 @@
 use itertools::Itertools;
 
-
 fn rules(color: &str) -> u32 {
     match color {
         "blue" => 14,
         "green" => 13,
         "red" => 12,
-        _ => 0
+        _ => 0,
     }
 }
 
@@ -19,7 +18,7 @@ struct MaxColor {
 
 impl MaxColor {
     fn mul(&self) -> u32 {
-        self.blue*self.green*self.red
+        self.blue * self.green * self.red
     }
 }
 
@@ -33,19 +32,25 @@ fn update_color_max_value(max_color: &mut MaxColor, new_max: (u32, &str)) {
 }
 
 fn is_possible(game: &str, is_part2: bool) -> u32 {
-    let mut max_color = MaxColor{ blue: 0, green: 0, red: 0};
+    let mut max_color = MaxColor {
+        blue: 0,
+        green: 0,
+        red: 0,
+    };
     let mut enough_balls = true;
 
-    let (id, games) =  game.split_once(':').unwrap();
+    let (id, games) = game.split_once(':').unwrap();
     let rounds: Vec<_> = games.split(';').to_owned().collect();
 
-    for round in rounds{
-        let balls : Vec<_> = round.split(',').collect();
-        for ball in balls { // N color
-            let (number, color) = ball.trim()
-            .split_once(' ')
-            .map(|(a, b)| (a.parse::<u32>().unwrap(), b))
-            .unwrap();
+    for round in rounds {
+        let balls: Vec<_> = round.split(',').collect();
+        for ball in balls {
+            // N color
+            let (number, color) = ball
+                .trim()
+                .split_once(' ')
+                .map(|(a, b)| (a.parse::<u32>().unwrap(), b))
+                .unwrap();
 
             update_color_max_value(&mut max_color, (number, color));
 
@@ -60,17 +65,27 @@ fn is_possible(game: &str, is_part2: bool) -> u32 {
     } else {
         match enough_balls {
             false => 0,
-            true => id.split_whitespace().last().to_owned().unwrap().parse::<u32>().unwrap()
+            true => id
+                .split_whitespace()
+                .last()
+                .to_owned()
+                .unwrap()
+                .parse::<u32>()
+                .unwrap(),
         }
     }
-
 }
 
 fn is_possible_concise(game: &str) -> u32 {
     let (id, games) = game.split_once(':').unwrap();
 
-    id.split_whitespace().last().unwrap().parse::<u32>().unwrap()
-        * !games.split(';')
+    id.split_whitespace()
+        .last()
+        .unwrap()
+        .parse::<u32>()
+        .unwrap()
+        * !games
+            .split(';')
             .flat_map(|round| round.split(','))
             .map(|ball| ball.split_whitespace().collect_tuple().unwrap())
             .any(|(number, color)| number.parse::<u32>().unwrap() > rules(color)) as u32
@@ -102,7 +117,7 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
         assert_eq!(0, is_possible_concise(games[3]));
         assert_eq!(5, is_possible_concise(games[4]));
 
-        // part2 
+        // part2
         assert_eq!(48, is_possible(games[0], true));
         assert_eq!(12, is_possible(games[1], true));
         assert_eq!(1560, is_possible(games[2], true));
@@ -111,12 +126,11 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
     }
 }
 
-
 pub fn day02() {
     let games = include_str!("input.txt");
-    
-    let result : u32 = games.lines().map(is_possible_concise).sum();
-    let result2 : u32 = games.lines().map(|line| is_possible(line, true)).sum();
+
+    let result: u32 = games.lines().map(is_possible_concise).sum();
+    let result2: u32 = games.lines().map(|line| is_possible(line, true)).sum();
 
     println!("Day02 part1: {}", result); // 2369
     println!("Day02 part2: {}", result2); // 66363

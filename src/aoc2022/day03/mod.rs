@@ -14,7 +14,6 @@ pub fn eval_doubles(str: &str) -> i32 {
 
     //dbg!(str, l, r, unique[0]);
     let letter = i32::from(unique[0]);
-    
 
     /*
     let y = match x {
@@ -22,7 +21,11 @@ pub fn eval_doubles(str: &str) -> i32 {
         _ => 15,
     */
 
-    if letter > 96 { letter - 96 } else { letter - 65 + 27 }
+    if letter > 96 {
+        letter - 96
+    } else {
+        letter - 65 + 27
+    }
 }
 
 pub fn eval_3chunk(str: &str) -> i32 {
@@ -40,7 +43,11 @@ pub fn eval_3chunk(str: &str) -> i32 {
             .intersect(z.as_bytes().to_vec());
 
         let letter = i32::from(unique[0]);
-        let pts = if letter > 96 { letter - 96 } else { letter - 65 + 27 };
+        let pts = if letter > 96 {
+            letter - 96
+        } else {
+            letter - 65 + 27
+        };
         total += pts;
     }
     total

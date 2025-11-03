@@ -1,12 +1,12 @@
-use std::cmp::Ordering;
 use nom::{
-    IResult,
     bytes::complete::tag,
     character::complete::{char, digit1},
     combinator::{map, map_opt},
     multi::separated_list0,
     sequence::{delimited, separated_pair},
+    IResult,
 };
+use std::cmp::Ordering;
 
 #[derive(Debug, Eq)]
 enum Packet {
@@ -18,8 +18,12 @@ impl Ord for Packet {
     fn cmp(&self, other: &Self) -> Ordering {
         match (self, other) {
             (Self::Number(a), Self::Number(b)) => a.cmp(b),
-            (Self::Vector(_a), Self::Number(b)) => self.cmp(&Packet::Vector(vec![Self::Number(*b)])), 
-            (Self::Number(a), Self::Vector(_b)) => Packet::Vector(vec![Self::Number(*a)]).cmp(other),
+            (Self::Vector(_a), Self::Number(b)) => {
+                self.cmp(&Packet::Vector(vec![Self::Number(*b)]))
+            }
+            (Self::Number(a), Self::Vector(_b)) => {
+                Packet::Vector(vec![Self::Number(*a)]).cmp(other)
+            }
             (Self::Vector(a), Self::Vector(b)) => {
                 for (l, r) in a.iter().zip(b) {
                     match l.cmp(r) {
@@ -47,7 +51,8 @@ impl PartialEq for Packet {
 }
 
 fn part1n2(_input: &str) -> (i32, i32) {
-     let t = _input.split("\n\n")
+    let t = _input
+        .split("\n\n")
         .map(|p| pair(p.as_bytes()).unwrap().1)
         .enumerate()
         .filter(|(_, (a, b))| a.cmp(b) == Ordering::Less);
@@ -95,7 +100,10 @@ mod tests {
         let vec1 = Packet::Vector(vec![Packet::Number(1), Packet::Number(6)]);
         let vec2 = Packet::Vector(vec![Packet::Number(3), Packet::Number(4)]);
         let vec3 = Packet::Vector(vec![Packet::Number(3), Packet::Number(1)]);
-        let vec4 = Packet::Vector(vec![Packet::Vector(vec![Packet::Number(3)]), Packet::Number(1)]);
+        let vec4 = Packet::Vector(vec![
+            Packet::Vector(vec![Packet::Number(3)]),
+            Packet::Number(1),
+        ]);
 
         assert_eq!(vec1.cmp(&vec2), Ordering::Less);
         assert_eq!(vec2.cmp(&vec3), Ordering::Greater);
@@ -115,10 +123,7 @@ pub fn day13() {
 }
 
 fn item(input: &[u8]) -> IResult<&[u8], Packet> {
-    nom::branch::alt((
-        map(list, Packet::Vector),
-        map(num, Packet::Number)
-    ))(input)
+    nom::branch::alt((map(list, Packet::Vector), map(num, Packet::Number)))(input)
 }
 
 fn num(input: &[u8]) -> IResult<&[u8], u8> {
@@ -126,11 +131,7 @@ fn num(input: &[u8]) -> IResult<&[u8], u8> {
 }
 
 fn list(input: &[u8]) -> IResult<&[u8], Vec<Packet>> {
-    delimited(
-        char('['),
-        separated_list0(char(','), item),
-        char(']')
-    )(input)
+    delimited(char('['), separated_list0(char(','), item), char(']'))(input)
 }
 
 fn pair(input: &[u8]) -> IResult<&[u8], (Packet, Packet)> {

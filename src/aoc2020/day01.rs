@@ -40,7 +40,9 @@ pub fn day01() -> Result<(), Error> {
                 }
             }
         }
-        if flag { break; };
+        if flag {
+            break;
+        };
     }
 
     Ok(())

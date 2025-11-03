@@ -1,5 +1,4 @@
 fn replace_digit_words(input: &str) -> String {
-
     let digit_dict: [(&str, &str); 9] = [
         ("one", "1"),
         ("two", "2"),
@@ -29,10 +28,10 @@ fn replace_digit_words(input: &str) -> String {
                         tmp_word = tmp_word.replace(word, digit);
                         result.push_str(&tmp_word.to_string());
                         tmp_word.clear();
-                        /* sneaky tricky, some word wrap together, but this shouldn't exclude them. 
-                        Therfore leave the last letter in "workping place" to append next chars 
+                        /* sneaky tricky, some word wrap together, but this shouldn't exclude them.
+                        Therfore leave the last letter in "workping place" to append next chars
                         and complete potential digit word*/
-                        tmp_word.push(word.chars().next_back().unwrap()); 
+                        tmp_word.push(word.chars().next_back().unwrap());
                         break;
                     }
                 }
@@ -55,7 +54,10 @@ fn calc_trebuchet(_input: &str, words2digits: bool) -> u32 {
             line_tmp = replace_digit_words(&line_tmp);
         }
 
-        let number_string = line_tmp.chars().filter(|c| c.is_ascii_digit()).collect::<String>();
+        let number_string = line_tmp
+            .chars()
+            .filter(|c| c.is_ascii_digit())
+            .collect::<String>();
         let number = number_string
             .chars()
             .take(1)
@@ -104,8 +106,7 @@ zoneight234
 }
 
 pub fn day01() {
-    let _input = include_str!("input.txt"); 
-    println!("Day01 part1: {}",  calc_trebuchet(_input, false)); // 55834
-    println!("Day01 part2: {}",  calc_trebuchet(_input, true)); // 53254 is too high, cheat 53221
+    let _input = include_str!("input.txt");
+    println!("Day01 part1: {}", calc_trebuchet(_input, false)); // 55834
+    println!("Day01 part2: {}", calc_trebuchet(_input, true)); // 53254 is too high, cheat 53221
 }
-
