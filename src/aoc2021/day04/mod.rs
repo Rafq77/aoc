@@ -1,22 +1,36 @@
-use std::{io::Error, num::ParseIntError};
+use std::io::Error;
 
-pub fn part1(input: String) -> i32 {
+pub fn both_parts(input: String) -> (i32, i32) {
     let mut bingo_game = parse_input(&input);
+    let mut first_winner = -1;
+    let mut last_winner = -1;
+    let total_bingo_cards = bingo_game.bingo_boards.len();
+
+    let mut completed_bingo_cards = vec![false; bingo_game.bingo_boards.len()];
 
     for number in bingo_game.numbers_to_draw {
-        for board in &mut bingo_game.bingo_boards {
+        for (index, board) in &mut bingo_game.bingo_boards.iter_mut().enumerate() {
             board.draw_number(number);
             if board.check_bingo() {
-                return board.get_sum_of_unmarked() * number;
+                if first_winner == -1 {
+                    first_winner = board.get_sum_of_unmarked() * number;
+                }
+
+                if completed_bingo_cards
+                    .iter()
+                    .filter(|p| p.eq(&&true))
+                    .count()
+                    == total_bingo_cards - 1
+                {
+                    last_winner = board.get_sum_of_unmarked() * number;
+                }
+
+                completed_bingo_cards[index] = true;
             }
         }
     }
 
-    0
-}
-
-pub fn part2(_input: String) -> Result<i32, ParseIntError> {
-    Ok(0)
+    (first_winner, last_winner)
 }
 
 const BOARD_SIZE: usize = 5;
@@ -239,25 +253,18 @@ mod tests {
     }
 
     #[test]
-    fn test_part1() {
+    fn test_both_parts() {
         // Typical bingo, where row or column win the game. No diagonals!
         // Winning number is determined by the sum of UNMARKED number multiplied by the last winning number.
 
-        assert_eq!(part1(TEST_CASE.to_string()), 4512);
-    }
-
-    #[test]
-    fn test_part2() {
-        // For second part selecting the most common bit filter the input
-        // So that only lines with that bit in that column are kept.
-        // Effectively reducing the input with each iteration.
-        assert_eq!(part2(TEST_CASE.to_string()), Ok(230));
+        assert_eq!(both_parts(TEST_CASE.to_string()), (4512, 1924));
     }
 }
 
 pub fn day04() -> Result<(), Error> {
     let input = include_str!("input.txt").to_string();
-    println!("Day04 part1: {0}", part1(input.clone())); // 35711
-    println!("Day04 part2: {0}", part2(input.clone()).unwrap()); // 6677951
+    let (part1, part2) = both_parts(input.clone());
+    println!("Day04 part1: {0}", part1); // 35711
+    println!("Day04 part2: {0}", part2); // 5586
     Ok(())
 }
