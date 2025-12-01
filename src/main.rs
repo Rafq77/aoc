@@ -5,6 +5,7 @@ mod aoc2021;
 mod aoc2022;
 mod aoc2023;
 mod aoc2024;
+mod aoc2025;
 
 fn main() -> Result<(), Error> {
     aoc2020::aoc2020()?;
@@ -12,5 +13,6 @@ fn main() -> Result<(), Error> {
     aoc2022::aoc2022();
     aoc2023::aoc2023();
     aoc2024::aoc2024();
+    aoc2025::aoc2025();
     Ok(())
 }
