@@ -97,15 +97,7 @@ impl BingoBoard {
             .map(|(row, marked_row)| {
                 row.iter()
                     .zip(marked_row)
-                    .filter_map(
-                        |(&val, &is_marked)| {
-                            if !is_marked {
-                                Some(val)
-                            } else {
-                                None
-                            }
-                        },
-                    )
+                    .filter_map(|(&val, &is_marked)| if !is_marked { Some(val) } else { None })
                     .sum::<i32>()
             })
             .sum()

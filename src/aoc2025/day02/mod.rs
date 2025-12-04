@@ -16,13 +16,16 @@ pub fn part2(input: String) -> i64 {
 }
 
 fn parse_input(input: &str) -> Vec<(i64, i64)> {
-    input.split(',').map(|pair| {
-        let split_pair = pair.split_once('-').unwrap();
-        (
-            split_pair.0.parse::<i64>().unwrap(),
-            split_pair.1.parse::<i64>().unwrap(),
-        )
-    }).collect()
+    input
+        .split(',')
+        .map(|pair| {
+            let split_pair = pair.split_once('-').unwrap();
+            (
+                split_pair.0.parse::<i64>().unwrap(),
+                split_pair.1.parse::<i64>().unwrap(),
+            )
+        })
+        .collect()
 }
 
 fn check_range(range: (i64, i64), multiple_repetitions: bool) -> Vec<i64> {
@@ -82,7 +85,6 @@ fn check_range(range: (i64, i64), multiple_repetitions: bool) -> Vec<i64> {
 mod tests {
     use super::*;
 
-
     static RANGES: &str = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
 
     #[test]
@@ -100,7 +102,10 @@ mod tests {
         assert_eq!(check_range((11, 22), false), vec![11, 22]);
         assert_eq!(check_range((95, 115), false), vec![99]);
         assert_eq!(check_range((998, 1012), false), vec![1010]);
-        assert_eq!(check_range((1188511880, 1188511890), false), vec![1188511885]);
+        assert_eq!(
+            check_range((1188511880, 1188511890), false),
+            vec![1188511885]
+        );
         assert_eq!(check_range((222220, 222224), false), vec![222222]);
         assert_eq!(check_range((1698522, 1698528), false), vec![]);
         assert_eq!(check_range((446443, 446449), false), vec![446446]);
@@ -112,13 +117,19 @@ mod tests {
         assert_eq!(check_range((11, 22), true), vec![11, 22]);
         assert_eq!(check_range((95, 115), true), vec![99, 111]);
         assert_eq!(check_range((998, 1012), true), vec![999, 1010]);
-        assert_eq!(check_range((1188511880, 1188511890), true), vec![1188511885]);
+        assert_eq!(
+            check_range((1188511880, 1188511890), true),
+            vec![1188511885]
+        );
         assert_eq!(check_range((222220, 222224), true), vec![222222]);
         assert_eq!(check_range((1698522, 1698528), true), vec![]);
         assert_eq!(check_range((446443, 446449), true), vec![446446]);
         assert_eq!(check_range((38593856, 38593862), true), vec![38593859]);
-        assert_eq!(check_range((824824821, 824824827 ), true), vec![824824824]);
-        assert_eq!(check_range((2121212118, 2121212124 ), true), vec![2121212121]);
+        assert_eq!(check_range((824824821, 824824827), true), vec![824824824]);
+        assert_eq!(
+            check_range((2121212118, 2121212124), true),
+            vec![2121212121]
+        );
     }
 
     #[test]
@@ -132,11 +143,10 @@ mod tests {
         let result = part2(RANGES.to_string());
         assert_eq!(result, 4174379265);
     }
-
 }
 
 pub fn day02() {
     let day02input = include_str!("input.txt").to_string();
     println!("Day02 part1: {0}", part1(day02input.clone())); // 804, 881 are still too low // 1227775554
-    println!("Day02 part2: {0}", part2(day02input.clone())); 
+    println!("Day02 part2: {0}", part2(day02input.clone()));
 }

@@ -101,5 +101,6 @@ pub fn day06() {
     println!(
         "Day06 part2: {}",
         calc_optimized_square_solution(parse_string_concatenated(_input))
-    ); // 20048741
+    );
+    // 20048741
 }

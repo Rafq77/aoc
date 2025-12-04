@@ -67,6 +67,6 @@ L82";
 
 pub fn day01() {
     let _input = include_str!("input.txt");
-    println!("Day01 part1: {}", dial(_input, false)); // 1076 
-    println!("Day01 part2: {}",  dial(_input, true)); //  6379
+    println!("Day01 part1: {}", dial(_input, false)); // 1076
+    println!("Day01 part2: {}", dial(_input, true)); //  6379
 }
